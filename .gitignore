@@ -4,6 +4,9 @@
 /node_modules
 /.pnp
 .pnp.js
+coverage
+coverage.json
+typechain
 
 # testing
 /coverage
@@ -27,6 +30,12 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
+
+#Hardhat files
+cache
+artifacts
+

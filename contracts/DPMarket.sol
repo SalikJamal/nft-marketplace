@@ -70,7 +70,7 @@ contract DPMarket is ReentrancyGuard {
     // 1. Create a market item to put it up for sale
     // 2. Create a market sale for buying and selling between different parties
 
-    function mintMarketItem(address nftContract, uint tokenId, uint price) public payable nonReentrant {
+    function makeMarketItem(address nftContract, uint tokenId, uint price) public payable nonReentrant {
 
         // nonReentrant is a modifier to prevent reentry attack
         require(price > 0, 'Price must be at least one wei');
@@ -116,7 +116,7 @@ contract DPMarket is ReentrancyGuard {
     function fetchMarketTokens() public view returns(MarketToken[] memory) {
 
         uint itemCount = _tokenIds.current();
-        uint unsoldItemCount = _tokensSold.current() - _tokenIds.current();
+        uint unsoldItemCount = _tokenIds.current() - _tokensSold.current();
         uint currentIndex = 0;
 
         // Looping over the number of items created (if number has not been sold populate the array)

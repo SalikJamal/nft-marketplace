@@ -19,7 +19,7 @@ module.exports = {
       accounts: [keyData]
     },
     mainnet: {
-      urL: `https://mainnet.infura.io/v3/${projectId}`,
+      url: `https://mainnet.infura.io/v3/${projectId}`,
       accounts: [keyData]
     }
   },

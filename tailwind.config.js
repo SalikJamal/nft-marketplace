@@ -3,7 +3,10 @@ module.exports = {
     './pages/**/*.{html,js}',
   ],
   theme: {
-    extend: {},
+    colors: {
+      'primary': '#1A1919',
+      'funky-green': '#00CED1'
+    },
   },
   plugins: [],
 }

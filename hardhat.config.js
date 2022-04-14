@@ -12,7 +12,7 @@ module.exports = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
-      chainId: 1337 // Configuration standard for the hardhat network
+      chainId: 31337 // Configuration standard for the hardhat network
     },
     mumbai: {
       url: `https://polygon-mumbai.infura.io/v3/${projectId}` ,

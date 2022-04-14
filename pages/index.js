@@ -1,7 +1,9 @@
+import React from 'react'
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
+import Image from 'next/image'
 
 import { nftAddress, nftMarketAddress } from '../config'
 
@@ -77,7 +79,7 @@ const Home = () => {
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4'>
           {nfts.map((nft, i) => (
             <div key={i} className='border shadow rounded-x1 overflow-hidden'>
-              <img src={nft.image} alt={nft.name}/>
+              <Image src={nft.image} alt={nft.name} />
               <div className='p-4 bg-black'>
                 <p style={{ height: 64 }} className='text-3xl text-funky-green font-semibold'>{nft.name}</p>
                 <div style={{ height: 72, overflow: 'hidden' }}>

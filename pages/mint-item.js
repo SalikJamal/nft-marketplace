@@ -1,7 +1,9 @@
+import React from 'react'
 import { useState } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import { useRouter } from 'next/router'
+import Image from 'next/dist/client/image'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { nftAddress, nftMarketAddress } from '../config'
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
@@ -90,7 +92,7 @@ const mintItem = () => {
                 <input className='mt-8 border rounded p-4 outline-none' placeholder='Asset Name' onChange={e => updateFormInput({ ...formInput, name: e.target.value })}  />
                 <textarea className='mt-2 border rounded p-4 outline-none' placeholder='Asset Description' onChange={e => updateFormInput({ ...formInput, description: e.target.value })}  />
                 <input className='mt-2 border rounded p-4 outline-none' placeholder='Asset Price in Eth' onChange={e => updateFormInput({ ...formInput, price: e.target.value })}  />
-                <input className='mt-4 outline-none' type='file' name='Asset' onChange={onChange}  /> {fileURL && <img className='rounded mt-4' src={fileURL} alt='Asset' width={350} />}
+                <input className='mt-4 outline-none' type='file' name='Asset' onChange={onChange}  /> {fileURL && <Image className='rounded mt-4' src={fileURL} alt='Asset' width={350} />}
             
                 <button className='font-bold mt-4 bg-primary text-funky-green rounded p-4 shadow-lg' onClick={createMarket}>Mint NFT</button>
             </div>
@@ -102,7 +104,3 @@ const mintItem = () => {
 
 
 export default mintItem
-
-// This is the first ever DarkPhantom NFT, with darkness and whatnot!
-// DarkPhantom 001
-// 100

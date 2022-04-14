@@ -92,7 +92,7 @@ const MintItem = () => {
                 <input className='mt-8 border rounded p-4 outline-none' placeholder='Asset Name' onChange={e => updateFormInput({ ...formInput, name: e.target.value })}  />
                 <textarea className='mt-2 border rounded p-4 outline-none' placeholder='Asset Description' onChange={e => updateFormInput({ ...formInput, description: e.target.value })}  />
                 <input className='mt-2 border rounded p-4 outline-none' placeholder='Asset Price in Eth' onChange={e => updateFormInput({ ...formInput, price: e.target.value })}  />
-                <input className='mt-4 outline-none' type='file' name='Asset' onChange={onChange}  /> {fileURL && <Image className='rounded mt-4' src={fileURL} alt='Asset' width={350} />}
+                <input className='mt-4 mb-4 outline-none' type='file' name='Asset' onChange={onChange}  /> {fileURL && <div style={{ position: "relative", width: "25%", height: 300 }}><Image className='rounded mt-4' src={fileURL} alt='Asset' layout='fill' objectFit='contain' /></div>}
             
                 <button className='font-bold mt-4 bg-primary text-funky-green rounded p-4 shadow-lg' onClick={createMarket}>Mint NFT</button>
             </div>

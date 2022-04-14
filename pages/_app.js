@@ -15,7 +15,7 @@ const DarkPhantomsMarketplace = ({ Component, pageProps }) => {
           <Link href='/'><a className='mr-4'>Marketplace</a></Link>
           <Link href='/mint-item'><a className='mr-6'>Mint NFT</a></Link>
           <Link href='/my-nfts'><a className='mr-6'>My NFTs</a></Link>
-          <Link href='/account-dashboard'><a className='mr-6'>Dashboard</a></Link>
+          <Link href='/dashboard'><a className='mr-6'>Dashboard</a></Link>
         </div>
       </nav>
       <Component {...pageProps} />

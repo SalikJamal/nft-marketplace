@@ -10,11 +10,13 @@ import { nftAddress, nftMarketAddress } from '../config'
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import DPMarket from '../artifacts/contracts/DPMarket.sol/DPMarket.json'
 
+// We want to load the user's NFTs and display them
 
-const Home = () => {
+const MyAssets = () => {
 
   const [nfts, setNfts] = useState([])
   const [loading, setLoading] = useState(true)
+
 
   useEffect(() => {
     loadNFTs()
@@ -23,11 +25,16 @@ const Home = () => {
   const loadNFTs = async () => {
 
     // What we want to load:
-    // Provider, tokenContract, maretkContract, data for our marketItems
-    const provider = new ethers.providers.JsonRpcProvider()
+    // We want to get the msg.sender and hook up to the signer to display the owner's NFTs
+
+    const web3Modal = new Web3Modal()
+    const connection = await web3Modal.connect()
+    const provider = new ethers.providers.Web3Provider(connection)
+    const signer = provider.getSigner()
+
     const tokenContract = new ethers.Contract(nftAddress, NFT.abi, provider)
-    const marketContract = new ethers.Contract(nftMarketAddress, DPMarket.abi, provider)
-    const data = await marketContract.fetchMarketTokens()
+    const marketContract = new ethers.Contract(nftMarketAddress, DPMarket.abi, signer)
+    const data = await marketContract.fetchMyNFTs()
 
     const items = await Promise.all(data.map(async i => {
     
@@ -54,24 +61,7 @@ const Home = () => {
 
   }
 
-  // Function to buy NFTs for market
-  const buyNFT = async (nft) => {
-
-    const web3Modal = new Web3Modal()
-    const connection = await web3Modal.connect()
-    const provider = new ethers.providers.Web3Provider(connection)
-    const signer = provider.getSigner()
-    const contract = new ethers.Contract(nftMarketAddress, DPMarket.abi, signer)
-
-    const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
-    const transaction = await contract.createMarketSale(nftAddress, nft.tokenId, { value: price })
-
-    await transaction.wait()
-    loadNFTs()
-
-  }
-
-  if(!loading && !nfts.length) return (<h1 className='px-20 ml-12 py-36 text-3xl text-funky-green'>No NFTs in the marketplace</h1>)
+  if(!loading && !nfts.length) return (<h1 className='px-20 ml-12 py-36 text-3xl text-funky-green'>No NFTs currently :(</h1>)
 
   return (
     <div className='p-4'>
@@ -79,7 +69,7 @@ const Home = () => {
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 pb-4'>
           {nfts.map((nft, i) => (
             <div key={i} className='border shadow rounded-x1 overflow-hidden'>
-              <div style={{ position: "relative", width: "100%", height: 400 }}><Image src={nft.image} alt={nft.name} layout='fill' objectFit='cover' /></div>
+                <div style={{ position: "relative", width: "100%", height: 400 }}><Image src={nft.image} alt={nft.name} layout='fill' objectFit='cover' /></div>
               <div className='p-4 bg-black'>
                 <p style={{ height: 64 }} className='text-3xl text-funky-green font-semibold'>{nft.name}</p>
                 <div style={{ height: 72, overflow: 'hidden' }}>
@@ -88,7 +78,6 @@ const Home = () => {
               </div>
               <div className='p-4 bg-black'>
                 <p className='text-3x-l mb-4 font-bold text-funky-green'>{nft.price} ETH</p>
-                <button className='w-full bg-primary text-funky-green font-bold py-3 px-12 rounded' onClick={() => buyNFT(nft)}>Buy</button>
               </div>
             </div>
           ))}
@@ -100,4 +89,4 @@ const Home = () => {
 }
 
 
-export default Home
+export default MyAssets

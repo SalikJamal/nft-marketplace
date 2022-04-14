@@ -13,7 +13,7 @@ import DPMarket from '../artifacts/contracts/DPMarket.sol/DPMarket.json'
 // In this component we set the IPFS up to hsot our NFT file storage
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
-const mintItem = () => {
+const MintItem = () => {
 
     const router = useRouter()
     const [fileURL, setFileURL] = useState(null)
@@ -103,4 +103,4 @@ const mintItem = () => {
 }
 
 
-export default mintItem
+export default MintItem

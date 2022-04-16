@@ -12,9 +12,9 @@ module.exports = {
     hardhat: {
       chainId: 31337 // Configuration standard for the hardhat network
     },
-    matic: {
-      url: `https://rpc-mumbai.maticvigil.com` ,
-      accounts: [process.env.PRIVATE_KEY]
+    mumbai: {
+      url: `https://polygon-mumbai.infura.io/v3/${projectId}` ,
+      accounts: [process.env.PRIVATE_KEY],
     },
     mainnet: {
       url: `https://mainnet.infura.io/v3/${projectId}`,

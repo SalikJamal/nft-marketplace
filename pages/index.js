@@ -15,6 +15,7 @@ const Home = () => {
 
   const [nfts, setNfts] = useState([])
   const [loading, setLoading] = useState(true)
+  const projectId = '2f794f05c64e4911932e87eb84d78501'
 
   useEffect(() => {
     loadNFTs()
@@ -24,7 +25,7 @@ const Home = () => {
 
     // What we want to load:
     // Provider, tokenContract, maretkContract, data for our marketItems
-    const provider = new ethers.providers.JsonRpcProvider()
+    const provider = new ethers.providers.JsonRpcProvider(`https://polygon-mumbai.infura.io/v3/${projectId}`)
     const tokenContract = new ethers.Contract(nftAddress, NFT.abi, provider)
     const marketContract = new ethers.Contract(nftMarketAddress, DPMarket.abi, provider)
     const data = await marketContract.fetchMarketTokens()

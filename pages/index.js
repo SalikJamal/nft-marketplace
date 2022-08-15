@@ -32,7 +32,6 @@ const Home = () => {
     const items = await Promise.all(data.map(async i => {
     
       const tokenURI = await tokenContract.tokenURI(i.tokenId)
-      console.log(tokenURI)
       // We want the token metadata
       const meta = await axios.get(tokenURI)
       let price = ethers.utils.formatUnits(i.price.toString(), 'ether')

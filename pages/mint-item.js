@@ -4,14 +4,22 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import { useRouter } from 'next/router'
 import Image from 'next/dist/client/image'
-import { create as ipfsHttpClient } from 'ipfs-http-client'
+import { create } from 'ipfs-http-client'
 import { nftAddress, nftMarketAddress } from '../config'
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import DPMarket from '../artifacts/contracts/DPMarket.sol/DPMarket.json'
 
 
-// In this component we set the IPFS up to hsot our NFT file storage
-const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
+// In this component we set the IPFS up to host our NFT file storage
+const ipfsAuth = 'Basic ' + Buffer.from(process.env.IPFS_PROJECT_ID + ':' + process.env.IPFS_API_SECRET).toString('base64')
+const client = create({ 
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    headers: {
+        authorization: ipfsAuth
+    }
+})
 
 const MintItem = () => {
 
@@ -31,7 +39,7 @@ const MintItem = () => {
 
         try {
             const added = await client.add(file, { progress: progress => console.log(`received: ${progress}`) })
-            const url = `https://ipfs.infura.io/ipfs/${added.path}`
+            const url = `${process.env.IPFS_GATEWAY_DOMAIN}/ipfs/${added.path}`
             setFileURL(url)
         } catch(error) {
             console.log('Error uploading file:', error)
@@ -48,7 +56,7 @@ const MintItem = () => {
         const data = JSON.stringify({ name, description, image: fileURL })
         try {
             const added = await client.add(data)
-            const url = `https://ipfs.infura.io/ipfs/${added.path}`
+            const url = `${process.env.IPFS_GATEWAY_DOMAIN}/ipfs/${added.path}`
             // Run a function that creates a sale and passes in the URL
             createSale(url)
         } catch(error) {

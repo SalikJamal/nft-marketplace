@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 import Image from 'next/image'
+import Loader from './components/Loader'
 
 import { nftAddress, nftMarketAddress } from '../config'
 
@@ -12,15 +13,19 @@ import DPMarket from '../artifacts/contracts/DPMarket.sol/DPMarket.json'
 
 // We want to load the user's NFTs and display them
 
+const POLYGON_MUMBAI_CHAINID = 80001
+
+
 const MyAssets = () => {
 
   const [nfts, setNfts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
-
-  useEffect(() => {
-    loadNFTs()
-  }, [])
+  const renderLoading = () => (
+    <div className='loader-container' style={{ margin: 30 }}>
+        <Loader />
+    </div>
+  )
 
   const loadNFTs = async () => {
 
@@ -31,6 +36,14 @@ const MyAssets = () => {
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)
     const signer = provider.getSigner()
+
+    const { chainId } = await provider.getNetwork()
+
+    if(chainId !== POLYGON_MUMBAI_CHAINID) {
+      alert('Please switch to Polygon Mumbai Test network and refresh the page')
+      return
+    } 
+    setLoading(true)
 
     const tokenContract = new ethers.Contract(nftAddress, NFT.abi, provider)
     const marketContract = new ethers.Contract(nftMarketAddress, DPMarket.abi, signer)
@@ -61,27 +74,33 @@ const MyAssets = () => {
 
   }
 
+  useEffect(() => {
+    loadNFTs()
+  }, [])
+
   if(!loading && !nfts.length) return (<h1 className='px-20 ml-12 py-36 text-3xl text-funky-green'>No NFTs currently :(</h1>)
 
   return (
     <div className='p-4'>
-      <div className='px-4' style={{ maxWidth: 1600 }}>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 pb-4'>
-          {nfts.map((nft, i) => (
-            <div key={i} className='border shadow rounded-x1 overflow-hidden'>
-                <div style={{ position: "relative", width: "100%", height: 400 }}><Image src={nft.image} alt={nft.name} layout='fill' objectFit='cover' /></div>
-              <div className='p-4 bg-black'>
-                <p style={{ height: 64 }} className='text-3xl text-funky-green font-semibold'>{nft.name}</p>
-                <div style={{ height: 72, overflow: 'hidden' }}>
-                  <p className='text-funky-green'>{nft.description}</p>
+      <div className='px-4'>
+        {loading ? renderLoading() : 
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 pb-4'>
+            {nfts.map((nft, i) => (
+              <div key={i} className='border shadow rounded-x1 overflow-hidden'>
+                  <div style={{ position: "relative", width: "100%", height: 400 }}><Image src={nft.image} alt={nft.name} layout='fill' objectFit='cover' /></div>
+                <div className='p-4 bg-black'>
+                  <p style={{ height: 64 }} className='text-3xl text-funky-green font-semibold'>{nft.name}</p>
+                  <div style={{ height: 72, overflow: 'hidden' }}>
+                    <p className='text-funky-green'>{nft.description}</p>
+                  </div>
+                </div>
+                <div className='p-4 bg-black'>
+                  <p className='text-3x-l mb-4 font-bold text-funky-green'>{nft.price} MATIC</p>
                 </div>
               </div>
-              <div className='p-4 bg-black'>
-                <p className='text-3x-l mb-4 font-bold text-funky-green'>{nft.price} ETH</p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        }
       </div>
     </div>
   )
